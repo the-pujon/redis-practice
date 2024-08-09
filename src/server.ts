@@ -14,7 +14,7 @@ async function main() {
       console.log(`app is running on http://localhost:${config.port}`);
     });
   } catch (err) {
-    console.log(err);
+    console.log("error is", err);
   }
 }
 
