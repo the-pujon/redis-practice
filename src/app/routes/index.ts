@@ -2,7 +2,12 @@ import { Router } from "express";
 
 const router = Router();
 
-const moduleRoutes = [];
+const moduleRoutes = [
+  {
+    path: "/services",
+    route: "ServiceRoutes",
+  },
+];
 
 moduleRoutes.forEach((route) => router.use(route.path, route.route));
 
