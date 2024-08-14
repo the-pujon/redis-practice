@@ -15,11 +15,14 @@ const signupUserIntoDB = async (payload: TUser) => {
 
   const result = await AuthModel.create(payload);
 
-  return result;
+  return omitPassword(result);
 };
 
 const loginUserService = async (payload: JwtPayload) => {
   const existingUser = await AuthModel.isUserExist(payload.email);
+
+  console.log(existingUser);
+  console.log(payload);
 
   if (!existingUser) {
     throw new AppError(httpStatus.BAD_REQUEST, "Invalid Email");
@@ -29,6 +32,8 @@ const loginUserService = async (payload: JwtPayload) => {
     payload.password,
     existingUser.password,
   );
+
+  console.log(correctPassword);
 
   if (!correctPassword) {
     throw new AppError(httpStatus.BAD_REQUEST, "Invalid Password");

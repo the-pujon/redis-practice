@@ -1,6 +1,7 @@
 import { model, Schema } from "mongoose";
 import { AuthStaticMethods, TUser } from "./auth.interface";
 import bcrypt from "bcrypt";
+import config from "../../config";
 
 const authSchema = new Schema<TUser, AuthStaticMethods>({
   name: {
@@ -23,6 +24,16 @@ const authSchema = new Schema<TUser, AuthStaticMethods>({
   totalBuy: {
     type: String,
   },
+});
+
+//hashing password before saving user data into db
+authSchema.pre("save", async function (next) {
+  this.password = await bcrypt.hash(
+    this.password,
+    Number(config.bcrypt_salt_rounds),
+  );
+
+  next();
 });
 
 authSchema.post("save", function (doc, next) {
