@@ -11,7 +11,7 @@ const authSchema = new Schema<TUser, AuthStaticMethods>({
     type: String,
     required: true,
   },
-  passwords: {
+  password: {
     type: String,
     required: true,
     select: 0,

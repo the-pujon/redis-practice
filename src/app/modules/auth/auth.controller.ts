@@ -3,7 +3,7 @@ import catchAsync from "../../utils/catchAsync";
 import sendResponse from "../../utils/sendResponse";
 import { UserService } from "./auth.service";
 
-const signupUser = catchAsync(async (res, req) => {
+const signupUser = catchAsync(async (req, res) => {
   const result = await UserService.signupUserIntoDB(req.body);
 
   sendResponse(res, {
@@ -14,7 +14,18 @@ const signupUser = catchAsync(async (res, req) => {
   });
 });
 
+const loginUser = catchAsync(async (req, res) => {
+  const result = await UserService.loginUserService(req.body);
+
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "User login successful",
+    data: result,
+  });
+});
+
 export const UserController = {
   signupUser,
-  //loginUser,
+  loginUser,
 };

@@ -5,7 +5,7 @@ type TRole = "admin" | "user";
 export interface TUser {
   name: string;
   email: string;
-  passwords: string;
+  password: string;
   role: TRole;
   totalBuy?: number;
 }
