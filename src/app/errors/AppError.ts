@@ -31,4 +31,5 @@ class ForbiddenError extends AppError {
   }
 }
 
-export { AppError, NotFoundError, UnauthorizedError, ForbiddenError };
+export { NotFoundError, UnauthorizedError, ForbiddenError };
+export default AppError;
