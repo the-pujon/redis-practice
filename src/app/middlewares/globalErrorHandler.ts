@@ -6,7 +6,11 @@ import config from "../config";
 import handleValidationError from "../errors/handleValidationError";
 import handleCastError from "../errors/handleCastError";
 import handleDuplicateError from "../errors/handleDuplicateError";
-import AppError from "../errors/AppError";
+import AppError, {
+  ForbiddenError,
+  NotFoundError,
+  UnauthorizedError,
+} from "../errors/AppError";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
@@ -39,7 +43,12 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
     statusCode = simplifiedError.statusCode;
     message = simplifiedError.message;
     errorMessages = simplifiedError.errorSources;
-  } else if (err instanceof AppError) {
+  } else if (
+    err instanceof AppError ||
+    err instanceof NotFoundError ||
+    err instanceof UnauthorizedError ||
+    err instanceof ForbiddenError
+  ) {
     statusCode = err?.statusCode;
     message = err.message;
     errorMessages = [
