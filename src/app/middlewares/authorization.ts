@@ -1,7 +1,10 @@
 import { NextFunction, Request, Response } from "express";
 //import catchAsync from "../utils/catchAsync.";
-import AppError from "../errors/AppError";
-import httpStatus from "http-status";
+import {
+  ForbiddenError,
+  NotFoundError,
+  UnauthorizedError,
+} from "../errors/AppError";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import config from "../config";
 import catchAsync from "../utils/catchAsync";
@@ -14,29 +17,22 @@ export const authorization = (...requiredRoles: ("admin" | "user")[]) => {
 
     //if token can't fount
     if (!token) {
-      throw new AppError(
-        httpStatus.UNAUTHORIZED,
-        "You are not authorized. Login first",
-      );
+      throw new UnauthorizedError("You are not authorized! Login first");
     }
 
     const decoded = jwt.verify(token, config.jwt_access_secret as string);
 
-    //console.log(decode, requireRole);
     const { email, role } = decoded as JwtPayload;
 
     const user = await AuthModel.isUserExist(email);
 
     //if user not found
     if (!user) {
-      throw new AppError(httpStatus.NOT_FOUND, "This user is not found !");
+      throw new NotFoundError("This user is not found!");
     }
 
     if (requiredRoles && !requiredRoles.includes(role)) {
-      throw new AppError(
-        httpStatus.UNAUTHORIZED,
-        "You have no access to this route",
-      );
+      throw new ForbiddenError("You have no access to this route");
     }
 
     req.user = decoded as JwtPayload;
