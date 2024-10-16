@@ -13,4 +13,22 @@ class AppError extends Error {
   }
 }
 
-export default AppError;
+class NotFoundError extends AppError {
+  constructor(message: string) {
+    super(404, message);
+  }
+}
+
+class UnauthorizedError extends AppError {
+  constructor(message: string) {
+    super(401, message);
+  }
+}
+
+class ForbiddenError extends AppError {
+  constructor(message: string) {
+    super(403, message);
+  }
+}
+
+export { AppError, NotFoundError, UnauthorizedError, ForbiddenError };
